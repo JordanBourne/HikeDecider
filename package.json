@@ -1,0 +1,19 @@
+{
+  "name": "hikedecider",
+  "version": "0.1.0",
+  "description": "Helps decide what hike to go on",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordanBourne/HikeDecider.git"
+  },
+  "author": "Jordan Bourne",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JordanBourne/HikeDecider/issues"
+  },
+  "homepage": "https://github.com/JordanBourne/HikeDecider#readme"
+}
