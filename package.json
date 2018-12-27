@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/JordanBourne/HikeDecider/issues"
   },
-  "homepage": "https://github.com/JordanBourne/HikeDecider#readme"
+  "homepage": "https://github.com/JordanBourne/HikeDecider#readme",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
 }
