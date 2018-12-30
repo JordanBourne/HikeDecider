@@ -3,8 +3,6 @@ const sinon = require('sinon');
 const axios = require('axios');
 
 const { getHikes } = require('../../src/routes/getHikes');
-// const googleService = require('../../src/services/googleDirections');
-// const hikingProjectService = require('../../src/services/hikingProjectService');
 
 const googleDirectionsMock = require('../mocks/googleDirections');
 const hikingProjectResults = require('../mocks/hikingProjectResults');
