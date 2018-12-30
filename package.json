@@ -4,7 +4,7 @@
   "description": "Helps decide what hike to go on",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha --recursive"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,10 @@
   "homepage": "https://github.com/JordanBourne/HikeDecider#readme",
   "dependencies": {
     "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "sinon": "^7.2.2"
   }
 }
