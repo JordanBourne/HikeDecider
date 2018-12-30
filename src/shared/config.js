@@ -16,5 +16,11 @@ module.exports = {
     blueBlack: 3,
     black: 4,
     dblack: 5
+  },
+  locations: {
+    loveland: {
+      lat: 40.394390,
+      lon: -105.070580
+    }
   }
 };
