@@ -6,6 +6,8 @@ const { getHikes } = require('../../src/routes/getHikes');
 
 const googleDirectionsMock = require('../mocks/googleDirections');
 const hikingProjectResults = require('../mocks/hikingProjectResults');
+const timezoneMock = require('../mocks/timezoneMock');
+const sunsetResponse = require('../mocks/sunsetResponse');
 
 describe('GetHikes::', () => {
   let sandbox;
@@ -15,9 +17,11 @@ describe('GetHikes::', () => {
     sandbox = sinon.createSandbox();
 
     axiosGetStub = sandbox.stub(axios, 'get');
-    axiosGetStub.resolves(googleDirectionsMock);
 
-    axiosGetStub.onFirstCall().resolves(hikingProjectResults);
+    axiosGetStub.onFirstCall().resolves(timezoneMock);
+    axiosGetStub.onSecondCall().resolves(sunsetResponse);
+    axiosGetStub.onThirdCall().resolves(hikingProjectResults);
+    axiosGetStub.resolves(googleDirectionsMock);
   });
 
   afterEach(() => {

@@ -1,38 +1,62 @@
 const timezoneService = require('../services/timezoneService.js');
 const sunsetService = require('../services/sunsetService.js');
 
-const getTimezoneData = async function(lat, lon) {
-  const timezoneData = await timezoneService.getTimezoneData(lat, lon);
+const calculateSecondsFromTimestamp = function(timestamp) {
+  // format must be hh:mm:ss
+  const hourMinSecond = timestamp.split(':');
 
-  return timezoneData;
+  return hourMinSecond[0] * 3600 + hourMinSecond[1] * 60 + Number(hourMinSecond[2]);
+}
+
+const getSecondsPassedToday = function(timezoneData) {
+  const currentClockTime = timezoneData.formatted.split(' ');
+
+  return calculateSecondsFromTimestamp(currentClockTime[1]);
 };
 
-const getTimestampSeconds = async function(lat, lon) {
-  const timezoneData = await getTimezoneData(lat, lon);
+const getSecondsUntilSunset = function(sunsetTime, gmtOffset) {
+  const sunset = sunsetTime.split(' ');
+  const halfDay = 60 * 60 * 12;
+  const fullDay = 60 * 60 * 24;
+  let sunsetSeconds = calculateSecondsFromTimestamp(sunset[0]);
 
-  return timezoneData.timestamp;
-};
+  if (sunset[1] === 'PM') {
+    sunsetSeconds += halfDay;
+  }
 
-const getTimestampFormatted = async function(lat, lon) {
-  const timezoneData = await getTimezoneData(lat, lon);
+  if (sunset[0].indexOf('12') === 0) {
+    sunsetSeconds -= halfDay;
+  }
 
-  return `${timezoneData.formatted.replace(' ', 'T')}.000Z`;
-};
+  sunsetSeconds += gmtOffset;
 
-const getTimeOfSunset = async function(lat, lon) {
-  const timeOfSunset = await sunsetService.getSunset(lat, lon);
+  if (sunsetSeconds < 0) {
+    sunsetSeconds += fullDay;
+  }
 
-  return timeOfSunset;
+  if (sunsetSeconds > fullDay) {
+    sunsetSeconds -= fullDay;
+  }
+
+  return sunsetSeconds;
 };
 
 const getRemainingDaylight = async function(lat, lon) {
-  return true;
+  const timezoneData = timezoneService.getTimezoneData(lat, lon);
+  const sunsetTime = sunsetService.getSunset(lat, lon);
+  let secondsPassedToday;
+  let sunsetTimeInSeconds;
+
+  await Promise.all([timezoneData, sunsetTime]).then(responses => {
+    secondsPassedToday = getSecondsPassedToday(responses[0]);
+    sunsetTimeInSeconds = getSecondsUntilSunset(responses[1], responses[0].gmtOffset);
+  });
+
+  return sunsetTimeInSeconds - secondsPassedToday;
 };
 
 module.exports = {
-  getTimezoneData,
-  getTimeOfSunset,
-  getRemainingDaylight,
-  getTimestampSeconds,
-  getTimestampFormatted
+  getSecondsPassedToday,
+  getSecondsUntilSunset,
+  getRemainingDaylight
 };

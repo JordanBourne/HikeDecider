@@ -5,7 +5,6 @@ const config = require('../shared/config');
 
 const getTrails = async function(params) {
   const availableTrails = await hikingProjectService.get('getTrails', params);
-
   return availableTrails.trails;
 };
 
@@ -19,7 +18,6 @@ const getTrailDistances = async function({ lat, lon, trails, experience }) {
   }
 
   const detailedTrails = await _getDetailedTrails({ unresolvedDistances, trails, hikeRate });
-
   return detailedTrails;
 };
 
@@ -64,7 +62,7 @@ const filterTrails = function({detailedTrails, timeToHike, maxLength = Infinity,
     }
     if (timeToHike - totalTime < -1800) {
       finalTrails.tooLong.push(trail);
-      break;
+      continue;
     }
 
     // Adjust for length of hike
@@ -73,7 +71,7 @@ const filterTrails = function({detailedTrails, timeToHike, maxLength = Infinity,
     }
     if (trail.trail.length > maxLength * 1.25) {
       finalTrails.tooLong.push(trail);
-      break;
+      continue;
     }
 
     // Adjust for difficulty

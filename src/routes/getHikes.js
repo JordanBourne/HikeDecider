@@ -1,7 +1,5 @@
 const hikeController = require('../controllers/hikeController');
-
-const TIME_SERVICE = function() { return; };
-const SUNSET_SERVICE = function() { return; };
+const timeController = require('../controllers/timeController');
 
 const getHikes = async function({
   lat,
@@ -15,8 +13,7 @@ const getHikes = async function({
   difficulty,
   experience
 }) {
-  const currentTime = TIME_SERVICE(lat, lon);
-  const timeOfSunset = SUNSET_SERVICE(lat, lon);
+  const timeToHikePromise = timeController.getRemainingDaylight(lat, lon);
 
   const trails = await hikeController.getTrails({
     lat,
@@ -29,7 +26,9 @@ const getHikes = async function({
 
   const detailedTrails = await hikeController.getTrailDistances({ lat, lon, trails, experience });
 
-  const timeToHike = timeOfSunset && currentTime ? timeOfSunset - currentTime : Infinity;
+  const timeToHike = await Promise.resolve(timeToHikePromise).then(time => {
+    return time > 0 ? time : Infinity;
+  });
   const filteredTrails = hikeController.filterTrails({detailedTrails, timeToHike, maxLength, difficulty});
 
   return filteredTrails;

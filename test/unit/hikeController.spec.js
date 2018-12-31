@@ -168,5 +168,21 @@ describe('HikeController::', () => {
       const filteredTrails = hikeController.filterTrails(params);
       expect(filteredTrails.tooLong.length).to.equal(1);
     });
+
+    it('Having a tooLong hike then a doable hike should include both', () => {
+      detailedTrail.timeToHike = 1861;
+      const secondHike = Object.assign({}, detailedTrail, { timeToHike: 60 });
+
+      const params = {
+        detailedTrails: [detailedTrail, secondHike], 
+        timeToHike: 120, 
+        maxLength: 1, 
+        difficulty: 0
+      };
+
+      const filteredTrails = hikeController.filterTrails(params);
+      expect(filteredTrails.tooLong.length).to.equal(1);
+      expect(filteredTrails.doable.length).to.equal(1);
+    });
   });
 });

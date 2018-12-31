@@ -20,42 +20,73 @@ describe('HikeController::', () => {
     sandbox.restore();
   });
 
-  describe('getTimestampSeconds::', () => {
+  describe('getSecondsPassedToday::', () => {
     beforeEach(() => {
       axiosGetStub = sandbox.stub(axios, 'get');
       axiosGetStub.resolves(timezoneMock);
     });
 
-    it('Should return timestamp in seconds', async () => {
-      const currentTime = await timeController.getTimestampSeconds(config.locations.loveland.lat, config.locations.loveland.lon);
+    it('Should return current time in seconds', async () => {
+      const currentTime = await timeController.getSecondsPassedToday(timezoneMock.data);
 
-      expect(currentTime).to.equal(timezoneMock.data.timestamp);
+      expect(currentTime).to.equal(46639);
     });
   });
 
-  describe('getTimestampFormatted::', () => {
+  describe('getSecondsUntilSunset::', () => {
     beforeEach(() => {
       axiosGetStub = sandbox.stub(axios, 'get');
       axiosGetStub.resolves(timezoneMock);
     });
 
-    it('Should return timezone within MST', async () => {
-      const currentTime = await timeController.getTimestampFormatted(config.locations.loveland.lat, config.locations.loveland.lon);
+    it('Should return 6pm in seconds in gmt -6', async () => {
+      const sunsetTime = await timeController.getSecondsUntilSunset('12:00:00 AM', -21600);
 
-      expect(currentTime).to.equal('2018-12-30T12:57:19.000Z');
+      expect(sunsetTime).to.equal(64800);
+    });
+
+    it('Should return 6pm in seconds in gmt -7', async () => {
+      const sunsetTime = await timeController.getSecondsUntilSunset('1:00:00 AM', -25200);
+
+      expect(sunsetTime).to.equal(64800);
+    });
+
+    it('Should return 6pm in seconds in gmt -12', async () => {
+      const sunsetTime = await timeController.getSecondsUntilSunset('6:00:00 AM', -43200);
+
+      expect(sunsetTime).to.equal(64800);
+    });
+
+    it('Should return 6pm in seconds in gmt+6', async () => {
+      const sunsetTime = await timeController.getSecondsUntilSunset('12:00:00 PM', 21600);
+
+      expect(sunsetTime).to.equal(64800);
+    });
+
+    it('Should return 6pm in seconds in gmt+7', async () => {
+      const sunsetTime = await timeController.getSecondsUntilSunset('1:00:00 PM', 18000);
+
+      expect(sunsetTime).to.equal(64800);
+    });
+
+    it('Should return 6pm in seconds in gmt', async () => {
+      const sunsetTime = await timeController.getSecondsUntilSunset('6:00:00 PM', 0);
+
+      expect(sunsetTime).to.equal(64800);
     });
   });
 
-  describe('getTimeOfSunset::', () => {
+  describe('getRemainingDaylight::', () => {
     beforeEach(() => {
       axiosGetStub = sandbox.stub(axios, 'get');
-      axiosGetStub.resolves(sunsetMock);
+      axiosGetStub.onFirstCall().resolves(timezoneMock);
+      axiosGetStub.onSecondCall().resolves(sunsetMock);
     });
 
     it('Should return timezone within MST', async () => {
-      const timeOfSunset = await timeController.getTimeOfSunset(config.locations.loveland.lat, config.locations.loveland.lon);
-
-      expect(timeOfSunset).to.equal(sunsetMock.data.results.sunset);
+      const remainindDaylight = await timeController.getRemainingDaylight(config.locations.loveland.lat, config.locations.loveland.lon);
+    
+      expect(remainindDaylight).to.equal(13557);
     });
   });
 });
