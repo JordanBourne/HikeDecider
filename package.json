@@ -17,11 +17,17 @@
   },
   "homepage": "https://github.com/JordanBourne/HikeDecider#readme",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "koa": "^2.6.2",
+    "koa-router": "^7.4.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
     "mocha": "^5.2.0",
+    "nodemon": "^1.18.9",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "sinon": "^7.2.2"
   }
 }
