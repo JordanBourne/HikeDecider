@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-const ANIMALS = ['dog', 'cat', 'monkey', 'turtle']
+const EXPERIENCELEVELS = ['new', 'beginner', 'intermediate', 'advanced', 'expert'];
 
 class SearchHikes extends Component {
   state = {
     location: "Seattle, WA",
-    animal: "",
+    experienceLevel: "",
     breed: ""
   };
 
@@ -14,9 +14,9 @@ class SearchHikes extends Component {
     });
   };
 
-  handleAnimalChange = event => {
+  handleExperienceLevelChange = event => {
     this.setState({
-      animal: event.target.value
+      experienceLevel: event.target.value
     });
   };
   
@@ -33,18 +33,18 @@ class SearchHikes extends Component {
           />
         </label>
         <br />
-        <label htmlFor="animal">
-        Animal
+        <label htmlFor="experienceLevel">
+        Experience:
         <select
-          id="animal"
-          value={this.state.animal}
-          onChange={this.handleAnimalChange}
-          onBlur={this.handleAnimalChange}
+          id="experienceLevel"
+          value={this.state.experienceLevel}
+          onChange={this.handleExperienceLevelChange}
+          onBlur={this.handleExperienceLevelChange}
         >
           <option />
-          {ANIMALS.map(animal => (
-            <option key={animal} value={animal}>
-              {animal}
+          {EXPERIENCELEVELS.map(experienceLevel => (
+            <option key={experienceLevel} value={experienceLevel}>
+              {experienceLevel}
             </option>
           ))}
         </select>
