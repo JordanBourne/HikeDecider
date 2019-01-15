@@ -12,26 +12,20 @@ class Hikes extends Component {
   }
 
   setDoable = hikes => {
-    this.setState({
-      hikes: {
-        doableHikes: hikes 
-      }
+    this.setState(state => {
+      return state.hikes.doableHikes = hikes;
     });
   }
 
   setStretch = hikes => {
-    this.setState({
-      hikes: {
-        stretchHikes: hikes 
-      }
+    this.setState(state => {
+      return state.hikes.stretchHikes = hikes;
     });
   }
 
   setTooLong = hikes => {
-    this.setState({
-      hikes: {
-        tooLongHikes: hikes 
-      }
+    this.setState(state => {
+      return state.hikes.tooLongHikes = hikes;
     });
   }
 
