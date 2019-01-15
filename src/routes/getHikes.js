@@ -30,5 +30,6 @@ module.exports = async (ctx, next) => {
   });
   const filteredTrails = hikeController.filterTrails({detailedTrails, timeToHike, maxLength, difficulty});
   ctx.body = filteredTrails;
+  console.log('## ctx.body ##', filteredTrails);
   return next();
 }
