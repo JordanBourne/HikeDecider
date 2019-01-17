@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
 const EXPERIENCELEVELS = ['new', 'beginner', 'intermediate', 'advanced', 'expert'];
 const DIFFICULTYLEVELS = ['Very Easy', 'Easy', 'Medium', 'Very Medium', 'Hard', 'Very Hard'];
@@ -9,12 +9,11 @@ class SearchHikes extends Component {
     lat: 40.394390,
     lon: -105.070580,
     maxDistanceToTrail: 50,
-    preferredTime: null,
     minTrailLength: 0,
     maxTrailLength: 20,
     rating: 1,
-    difficulty: 'Easy',
-    experienceLevel: 'beginner'
+    difficulty: 'Hard',
+    experience: 'beginner'
   };
 
   handleInputChange = (fieldName, event) => {
@@ -24,17 +23,34 @@ class SearchHikes extends Component {
     });
   };
 
+  buildUrl = () => {
+    let url = `http://localhost:1337/getHikes?`;
+    const keys = Object.keys(this.state);
+    keys.forEach((key, index)=> {
+      if (index !== 0) {
+        url += '&'
+      }
+      if (key === 'difficulty') {
+        url += `${key}=${DIFFICULTYLEVELS.indexOf(this.state[key])}`;
+      } else {
+        url += `${key}=${this.state[key]}`;
+      }
+    });
+
+    return url;
+  }
+
   submitForm = () => {
-    console.log('## STATE ##', this.state);
-    // axios.get('http://localhost:8080/getHikes?lat=40.394390&lon=-105.070580')
-    //   .then(response => {
-    //     console.log('## RESPONSE BODY ##', JSON.stringify(response.data));
-        let response = {}
-        response.data = JSON.parse(asdf)
+    const url = this.buildUrl();
+
+    axios.get(url)
+      .then(response => {
+        // let response = {}
+        // response.data = JSON.parse(asdf)
         this.props.setDoable(response.data.doable);
         this.props.setStretch(response.data.stretch);
         this.props.setTooLong(response.data.tooLong);
-      // });
+      });
   }
   
   render() {
@@ -95,25 +111,25 @@ class SearchHikes extends Component {
           />
         </label>
         <br />
-        <label htmlFor="experienceLevel">
-          Experience:
+        <label htmlFor="experience">
+          Experience (used to calculate hiking speed):
           <select
-            id="experienceLevel"
-            value={this.state.experienceLevel}
-            onChange={this.handleInputChange.bind(this, 'experienceLevel')}
-            onBlur={this.handleInputChange.bind(this, 'experienceLevel')}
+            id="experience"
+            value={this.state.experience}
+            onChange={this.handleInputChange.bind(this, 'experience')}
+            onBlur={this.handleInputChange.bind(this, 'experience')}
           >
             <option />
-            {EXPERIENCELEVELS.map(experienceLevel => (
-              <option key={experienceLevel} value={experienceLevel}>
-                {experienceLevel}
+            {EXPERIENCELEVELS.map(experience => (
+              <option key={experience} value={experience}>
+                {experience}
               </option>
             ))}
           </select>
         </label>
         <br />
         <label htmlFor="difficulty">
-          Experience (used to calculate hiking speed):
+          Max Trail Difficulty:
           <select
             id="difficulty"
             value={this.state.difficulty}
@@ -124,23 +140,6 @@ class SearchHikes extends Component {
             {DIFFICULTYLEVELS.map(difficulty => (
               <option key={difficulty} value={difficulty}>
                 {difficulty}
-              </option>
-            ))}
-          </select>
-        </label>
-        <br />
-        <label htmlFor="experienceLevel">
-          Trail Difficulty:
-          <select
-            id="experienceLevel"
-            value={this.state.experienceLevel}
-            onChange={this.handleInputChange.bind(this, 'experienceLevel')}
-            onBlur={this.handleInputChange.bind(this, 'experienceLevel')}
-          >
-            <option />
-            {EXPERIENCELEVELS.map(experienceLevel => (
-              <option key={experienceLevel} value={experienceLevel}>
-                {experienceLevel}
               </option>
             ))}
           </select>

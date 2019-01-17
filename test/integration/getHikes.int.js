@@ -3,6 +3,7 @@ const axios = require('axios');
 const request = require('request-promise');
 const { expect, assert } = require('chai');
 
+const config = require('../../config/config');
 const app = require('../../app');
 const googleDirectionsMock = require('../mocks/googleDirections');
 const hikingProjectResults = require('../mocks/hikingProjectResults');
@@ -33,7 +34,7 @@ describe('GetHikes::', () => {
   });
 
   it('Should get list of hikes', async () => {
-    const response = await request.get('http://localhost:1337/getHikes?lat=40.394390&lon=-105.070580');
+    const response = await request.get(`http://localhost:${config.port}/getHikes?lat=40.394390&lon=-105.070580`);
 
     const hikes = JSON.parse(response);
     expect(axiosGetStub.called).to.be.true;
