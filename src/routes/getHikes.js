@@ -5,11 +5,11 @@ module.exports = async (ctx, next) => {
   const {
     lat,
     lon,
-    maxDistance,
+    maxDistanceToTrail,
     maxResults,
-    time,
-    minLength,
-    maxLength,
+    preferredTime = Infinity,
+    minTrailLength,
+    maxTrailLength,
     rating,
     difficulty,
     experience
@@ -19,17 +19,18 @@ module.exports = async (ctx, next) => {
   const trails = await hikeController.getTrails({
     lat,
     lon,
-    maxDistance,
+    maxDistanceToTrail,
     maxResults,
-    minLength,
+    minTrailLength,
     rating
   });
   const detailedTrails = await hikeController.getTrailDistances({ lat, lon, trails, experience });
-  const timeToHike = await Promise.resolve(timeToHikePromise).then(time => {
-    return time > 0 ? time : Infinity;
+  let timeToHike = await Promise.resolve(timeToHikePromise).then(hikingTime => {
+    return hikingTime > 0 ? hikingTime : Infinity;
   });
-  const filteredTrails = hikeController.filterTrails({detailedTrails, timeToHike, maxLength, difficulty});
+  timeToHike = Math.min(preferredTime, timeToHike)
+  const filteredTrails = hikeController.filterTrails({detailedTrails, timeToHike, maxTrailLength, difficulty});
   ctx.body = filteredTrails;
-  console.log('## ctx.body ##', filteredTrails);
+
   return next();
 }

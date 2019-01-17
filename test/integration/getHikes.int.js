@@ -9,17 +9,6 @@ const hikingProjectResults = require('../mocks/hikingProjectResults');
 const timezoneMock = require('../mocks/timezoneMock');
 const sunsetResponse = require('../mocks/sunsetResponse');
 
-function buildRequest(url) {
-  const postRequest = chai.request(app)
-    .post('/v1/user/confirm');
-
-   for (let header in headers) {
-    postRequest.set(header, headers[header]);
-  }
-
-   return postRequest.send(postData);
-}
-
 describe('GetHikes::', () => {
   let sandbox;
   let axiosGetStub;
@@ -35,7 +24,7 @@ describe('GetHikes::', () => {
     axiosGetStub.onThirdCall().resolves(hikingProjectResults);
     axiosGetStub.resolves(googleDirectionsMock);
 
-    server = app.listen(3000);
+    server = app.listen(1337);
   });
 
   afterEach(() => {
@@ -44,7 +33,7 @@ describe('GetHikes::', () => {
   });
 
   it('Should get list of hikes', async () => {
-    const response = await request.get('http://localhost:3000/getHikes?lat=40.394390&lon=-105.070580');
+    const response = await request.get('http://localhost:1337/getHikes?lat=40.394390&lon=-105.070580');
 
     const hikes = JSON.parse(response);
     expect(axiosGetStub.called).to.be.true;

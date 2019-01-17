@@ -13,7 +13,7 @@ const getTrailDistances = async function({ lat, lon, trails, experience }) {
   const unresolvedDistances = [];
   const hikeRate = config.hikeRates[experience] || config.hikeRates.beginner;
   for (let trail of trails) {
-    const distance = _getTrailDistance({ trail, start, lat, lon });
+    const distance = _getTrailDistance({ trail, start});
     unresolvedDistances.push(distance);
   }
 
@@ -21,7 +21,7 @@ const getTrailDistances = async function({ lat, lon, trails, experience }) {
   return detailedTrails;
 };
 
-const _getTrailDistance = function({ trail, start, lat, lon }) {
+const _getTrailDistance = function({ trail, start}) {
   const end = {
     lat: trail.latitude,
     lon: trail.longitude
