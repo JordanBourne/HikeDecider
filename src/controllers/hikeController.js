@@ -50,7 +50,7 @@ const _getDetailedTrails = async function({ unresolvedDistances, trails, hikeRat
   return detailedTrails;
 };
 
-const getDoableTrails = function({detailedTrails, timeToHike, difficulty = 5}) {
+const getDoableTrails = function({detailedTrails, timeToHike, difficulty = 5, ignoreTimeRestriction}) {
   const finalTrails = {
     doable: [],
     stretch: []
@@ -62,10 +62,10 @@ const getDoableTrails = function({detailedTrails, timeToHike, difficulty = 5}) {
     let trailStatus = 0;
 
     // Adjust for time of trip
-    if (timeToHike - totalTime < 0) {
+    if (timeToHike - totalTime < 0 && !ignoreTimeRestriction) {
       trailStatus++;
     }
-    if (timeToHike - totalTime < -1800) {
+    if (timeToHike - totalTime < -1800 && !ignoreTimeRestriction) {
       continue;
     }
 

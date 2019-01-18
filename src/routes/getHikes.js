@@ -12,7 +12,8 @@ module.exports = async (ctx, next) => {
     maxTrailLength = Infinity,
     rating,
     difficulty,
-    experience
+    experience,
+    ignoreTimeRestriction
   } = ctx.query;
 
   const timeToHikePromise = timeController.getRemainingDaylight(lat, lon);
@@ -30,7 +31,7 @@ module.exports = async (ctx, next) => {
     return hikingTime > 0 ? hikingTime : Infinity;
   });
   timeToHike = Math.min(preferredTime, timeToHike)
-  const doableTrails = hikeController.getDoableTrails({detailedTrails, timeToHike, difficulty});
+  const doableTrails = hikeController.getDoableTrails({detailedTrails, timeToHike, difficulty, ignoreTimeRestriction});
   ctx.body = doableTrails;
 
   return next();

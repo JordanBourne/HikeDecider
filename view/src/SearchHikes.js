@@ -13,13 +13,20 @@ class SearchHikes extends Component {
     maxTrailLength: 20,
     rating: 1,
     difficulty: 'Hard',
-    experience: 'beginner'
+    experience: 'beginner',
+    ignoreTimeRestriction: false
   };
 
   handleInputChange = (fieldName, event) => {
     const value = event.target.value;
     this.setState(state => {
       return state[fieldName] = value;
+    });
+  };
+  
+  handleCheckboxChange = (fieldName, event) => {
+    this.setState(state => {
+      return state[fieldName] = !state[fieldName];
     });
   };
 
@@ -43,12 +50,13 @@ class SearchHikes extends Component {
   submitForm = () => {
     const url = this.buildUrl();
 
-    // axios.get(url)
-    //   .then(response => {
-        let response = {}
-        response.data = JSON.parse(asdf)
+    axios.get(url)
+      .then(response => {
+        // let response = {}
+        // response.data = JSON.parse(asdf)
+        console.log('## RESPONSE ##', response.data)
         this.props.setHikes(response.data);
-      // });
+      });
   }
   
   render() {
@@ -158,6 +166,16 @@ class SearchHikes extends Component {
               </option>
             ))}
           </select>
+        </label>
+        <br />
+        <label htmlFor="ignoreTimeRestriction">
+          Ignore Time Restriction:
+          <input
+            id="ignoreTimeRestriction"
+            type="checkbox"
+            checked={this.state.ignoreTimeRestriction}
+            onChange={this.handleCheckboxChange.bind(this, 'ignoreTimeRestriction')}
+          />
         </label>
         <br />
         <button onClick={this.submitForm}>Submit</button>

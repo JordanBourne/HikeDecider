@@ -46,6 +46,7 @@ class Hikes extends Component {
 
   updateOrderedHikes = () => {
     const hikeCopy = [...this.state.hikes.doableHikes, ...this.state.hikes.stretchHikes];
+    console.log('## HIKE COPY ##', hikeCopy)
     const lengthOrder = [...hikeCopy].sort((a, b) => a.trail.length - b.trail.length);
     const timeToHikeOrder = [...hikeCopy].sort((a, b) => a.timeToHike - b.timeToHike);
     const difficultyOrder = [...hikeCopy].sort((a, b) => {
