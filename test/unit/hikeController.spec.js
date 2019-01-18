@@ -38,6 +38,17 @@ describe('HikeController::', () => {
     });
   });
 
+  describe('filterTrails::', () => {
+    it('Should get results back from HikingProject', async () => {
+      const trails = await hikeController.filterTrails({
+        trails: hikingProjectResults.data.trails,
+        maxTrailLength: 3.5
+      });
+
+      expect(trails.length).to.equal(3);
+    });
+  });
+
   describe('getTrailDistances::', () => {
     beforeEach(() => {
       axiosGetStub = sandbox.stub(axios, 'get');
@@ -61,7 +72,7 @@ describe('HikeController::', () => {
     });
   });
 
-  describe('filterTrails::', () => {
+  describe('getDoableTrails::', () => {
     let detailedTrail;
     beforeEach(() => {
       detailedTrail = JSON.parse(JSON.stringify(oneDetailedTrail));
@@ -79,7 +90,7 @@ describe('HikeController::', () => {
         difficulty: 0
       };
 
-      const filteredTrails = hikeController.filterTrails(params);
+      const filteredTrails = hikeController.getDoableTrails(params);
       expect(filteredTrails.doable.length).to.equal(1);
     });
 
@@ -93,36 +104,8 @@ describe('HikeController::', () => {
         difficulty: 0
       };
 
-      const filteredTrails = hikeController.filterTrails(params);
+      const filteredTrails = hikeController.getDoableTrails(params);
       expect(filteredTrails.stretch.length).to.equal(1);
-    });
-
-    it('Increasing trail length should put it into stretch', () => {
-      detailedTrail.trail.length = 1.2;
-
-      const params = {
-        detailedTrails: [detailedTrail], 
-        timeToHike: 120, 
-        maxLength: 1, 
-        difficulty: 0
-      };
-
-      const filteredTrails = hikeController.filterTrails(params);
-      expect(filteredTrails.stretch.length).to.equal(1);
-    });
-
-    it('Increasing trail length to more than 125% should put it into tooLong', () => {
-      detailedTrail.trail.length = 1.26;
-
-      const params = {
-        detailedTrails: [detailedTrail], 
-        timeToHike: 120, 
-        maxLength: 1, 
-        difficulty: 0
-      };
-
-      const filteredTrails = hikeController.filterTrails(params);
-      expect(filteredTrails.tooLong.length).to.equal(1);
     });
 
     it('Increasing time to hike should put it into stretch', () => {
@@ -135,11 +118,11 @@ describe('HikeController::', () => {
         difficulty: 0
       };
 
-      const filteredTrails = hikeController.filterTrails(params);
+      const filteredTrails = hikeController.getDoableTrails(params);
       expect(filteredTrails.stretch.length).to.equal(1);
     });
 
-    it('Increasing time to hike to more than 30 minutes extra should put it into tooLong', () => {
+    it('Increasing time to hike to more than 30 minutes extra should exclude the trail', () => {
       detailedTrail.timeToHike = 1861;
 
       const params = {
@@ -149,27 +132,26 @@ describe('HikeController::', () => {
         difficulty: 0
       };
 
-      const filteredTrails = hikeController.filterTrails(params);
-      expect(filteredTrails.tooLong.length).to.equal(1);
+      const filteredTrails = hikeController.getDoableTrails(params);
+      expect(filteredTrails.doable.length + filteredTrails.stretch.length).to.equal(0);
     });
 
-    it('Combined stretch goals should push it into tooLong', () => {
+    it('Combined stretch goals should exclude the trail', () => {
       detailedTrail.timeToHike = 61;
       detailedTrail.trail.length = 1.2;
-      detailedTrail.trail.difficulty = 'greenBlue';
+      detailedTrail.trail.difficulty = 'blue';
 
       const params = {
         detailedTrails: [detailedTrail], 
         timeToHike: 120, 
-        maxLength: 1, 
         difficulty: 0
       };
 
-      const filteredTrails = hikeController.filterTrails(params);
-      expect(filteredTrails.tooLong.length).to.equal(1);
+      const filteredTrails = hikeController.getDoableTrails(params);
+      expect(filteredTrails.doable.length + filteredTrails.stretch.length).to.equal(0);
     });
 
-    it('Having a tooLong hike then a doable hike should include both', () => {
+    it('Having a tooLong hike then a doable hike should include just the doable', () => {
       detailedTrail.timeToHike = 1861;
       const secondHike = Object.assign({}, detailedTrail, { timeToHike: 60 });
 
@@ -180,9 +162,8 @@ describe('HikeController::', () => {
         difficulty: 0
       };
 
-      const filteredTrails = hikeController.filterTrails(params);
-      expect(filteredTrails.tooLong.length).to.equal(1);
-      expect(filteredTrails.doable.length).to.equal(1);
+      const filteredTrails = hikeController.getDoableTrails(params);
+      expect(filteredTrails.doable.length + filteredTrails.stretch.length).to.equal(1);
     });
   });
 });

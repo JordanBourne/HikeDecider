@@ -43,14 +43,12 @@ class SearchHikes extends Component {
   submitForm = () => {
     const url = this.buildUrl();
 
-    axios.get(url)
-      .then(response => {
-        // let response = {}
-        // response.data = JSON.parse(asdf)
-        this.props.setDoable(response.data.doable);
-        this.props.setStretch(response.data.stretch);
-        this.props.setTooLong(response.data.tooLong);
-      });
+    // axios.get(url)
+    //   .then(response => {
+        let response = {}
+        response.data = JSON.parse(asdf)
+        this.props.setHikes(response.data);
+      // });
   }
   
   render() {

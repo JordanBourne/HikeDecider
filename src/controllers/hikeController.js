@@ -8,6 +8,12 @@ const getTrails = async function(params) {
   return availableTrails.trails;
 };
 
+const filterTrails = function({trails, maxTrailLength}) {
+  return trails.filter(trail => {
+    return trail.length <= maxTrailLength; 
+  });
+};
+
 const getTrailDistances = async function({ lat, lon, trails, experience }) {
   const start = { lat, lon };
   const unresolvedDistances = [];
@@ -44,11 +50,10 @@ const _getDetailedTrails = async function({ unresolvedDistances, trails, hikeRat
   return detailedTrails;
 };
 
-const filterTrails = function({detailedTrails, timeToHike, maxLength = Infinity, difficulty = 5}) {
+const getDoableTrails = function({detailedTrails, timeToHike, difficulty = 5}) {
   const finalTrails = {
     doable: [],
-    stretch: [],
-    tooLong: []
+    stretch: []
   };
 
   for (let trail of detailedTrails) {
@@ -61,16 +66,6 @@ const filterTrails = function({detailedTrails, timeToHike, maxLength = Infinity,
       trailStatus++;
     }
     if (timeToHike - totalTime < -1800) {
-      finalTrails.tooLong.push(trail);
-      continue;
-    }
-
-    // Adjust for length of hike
-    if (trail.trail.length > maxLength) {
-      trailStatus++;
-    }
-    if (trail.trail.length > maxLength * 1.25) {
-      finalTrails.tooLong.push(trail);
       continue;
     }
 
@@ -84,8 +79,6 @@ const filterTrails = function({detailedTrails, timeToHike, maxLength = Infinity,
       finalTrails.doable.push(trail);
     } else if (trailStatus <= 2) {
       finalTrails.stretch.push(trail);
-    } else {
-      finalTrails.tooLong.push(trail);
     }
   }
 
@@ -95,5 +88,6 @@ const filterTrails = function({detailedTrails, timeToHike, maxLength = Infinity,
 module.exports = {
   getTrails,
   getTrailDistances,
+  getDoableTrails,
   filterTrails
 }

@@ -38,7 +38,7 @@ describe('GetHikes::', () => {
 
     const hikes = JSON.parse(response);
     expect(axiosGetStub.called).to.be.true;
-    expect(hikes.doable.length + hikes.stretch.length + hikes.tooLong.length).to.equal(10);
+    expect(hikes.doable.length + hikes.stretch.length).to.equal(3);
     return;
   });
 });
