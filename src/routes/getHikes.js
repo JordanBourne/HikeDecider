@@ -22,7 +22,7 @@ module.exports = async (ctx, next) => {
     lat,
     lon,
     maxDistanceToTrail,
-    maxResults: maxResults + startPoint,
+    maxResults: parseInt(maxResults) + parseInt(startPoint),
     minTrailLength,
     rating
   });
