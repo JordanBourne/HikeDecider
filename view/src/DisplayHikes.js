@@ -11,7 +11,7 @@ class DisplayHikes extends Component {
   createDetails = (hike, key) => {
     return (
       <p key={key}>
-        Trail Name: {hike.trail.name} <br />
+        Trail Name: <a href={hike.trail.url}>{hike.trail.name}</a> <br />
         Trail Length: {hike.trail.length} Miles<br />
         Trail Difficulty: {hike.trail.difficulty} <br />
         Driving Distance: {hike.distanceDetails.routes[0].legs[0].distance.text} <br />
@@ -129,7 +129,7 @@ class DisplayHikes extends Component {
   loadMoreHikes = () => {
     axios.get(`${this.props.url}&startPoint=${this.state.startPoint}`)
       .then(response => {
-        this.props.addHikes(response.body);
+        this.props.addHikes(response.data);
         this.updateStartPoint();
       });
   }
