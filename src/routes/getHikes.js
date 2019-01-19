@@ -6,14 +6,15 @@ module.exports = async (ctx, next) => {
     lat,
     lon,
     maxDistanceToTrail,
-    maxResults,
+    maxResults = 10,
     preferredTime = Infinity,
     minTrailLength,
     maxTrailLength = Infinity,
     rating,
     difficulty,
     experience,
-    ignoreTimeRestriction
+    ignoreTimeRestriction,
+    startPoint = 0
   } = ctx.query;
 
   const timeToHikePromise = timeController.getRemainingDaylight(lat, lon);
@@ -21,11 +22,11 @@ module.exports = async (ctx, next) => {
     lat,
     lon,
     maxDistanceToTrail,
-    maxResults,
+    maxResults: maxResults + startPoint,
     minTrailLength,
     rating
   });
-  const filteredTrails = hikeController.filterTrails({trails, maxTrailLength});
+  const filteredTrails = hikeController.filterTrails({trails, maxTrailLength, startPoint});
   const detailedTrails = await hikeController.getTrailDistances({ lat, lon, trails: filteredTrails, experience });
   let timeToHike = await Promise.resolve(timeToHikePromise).then(hikingTime => {
     return hikingTime > 0 ? hikingTime : Infinity;

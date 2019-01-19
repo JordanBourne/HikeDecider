@@ -48,6 +48,7 @@ class SearchHikes extends Component {
   }
 
   submitForm = () => {
+    this.props.hideNoMoreHikes();
     const url = this.buildUrl();
 
     axios.get(url)
@@ -56,6 +57,7 @@ class SearchHikes extends Component {
         // response.data = JSON.parse(asdf)
         console.log('## RESPONSE ##', response.data)
         this.props.setHikes(response.data);
+        this.props.setUrl(url);
       });
   }
   

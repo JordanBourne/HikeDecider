@@ -22,26 +22,39 @@ class Hikes extends Component {
       byDifficulty: [],
       byHikingTime: [],
       byDrivingDistance: []
-    }
+    },
+    noMoreHikes: false,
+    url: ''
   }
 
   setHikes = hikes => {
     this.setState(state => {
-      state.hikes.doableHikes = state.hikes.doableHikes.concat(hikes.doable);
-      return state.hikes.stretchHikes = state.hikes.stretchHikes.concat(hikes.stretch);
+      state.hikes.doableHikes = hikes.doable;
+      state.hikes.stretchHikes = hikes.stretch;
     }, this.updateOrderedHikes);
   }
 
-  setDoable = hikes => {
+  addHikes = hikes => {
     this.setState(state => {
-      return state.hikes.doableHikes = state.hikes.doableHikes.concat(hikes);
-    });
+      state.hikes.doableHikes = this.addNonDuplicate(state.hikes.doableHikes, hikes.doable);
+      state.hikes.stretchHikes = this.addNonDuplicate(state.hikes.stretchHikes, hikes.stretch);
+    }, this.updateOrderedHikes);
   }
 
-  setStretch = hikes => {
-    this.setState(state => {
-      return state.hikes.stretchHikes = state.hikes.stretchHikes.concat(hikes);
+  addNonDuplicate = (hikes, moreHikes) => {
+    let hikeMap = {};
+    
+    hikes.forEach(hike => {
+      hikeMap[hike.trail.name] = true;
     });
+
+    moreHikes.forEach(hike => {
+      if (!hikeMap[hike.trail.name]) {
+        hikes.push(hike);
+      }
+    });
+
+    return hikes;
   }
 
   updateOrderedHikes = () => {
@@ -66,10 +79,35 @@ class Hikes extends Component {
     });
   }
 
+  renderNoMoreHikes = () => {
+    this.setState(state => {
+      return state.noMoreHikes = true;
+    });
+  }
+
+  hideNoMoreHikes = () => {
+    this.setState(state => {
+      return state.noMoreHikes = false;
+    });
+  }
+
+  setUrl = url => {
+    this.setState(state => {
+      return state.url = url;
+    });
+  }
+
   render() {
     let hikes;
     if (this.state.hikes.doableHikes.length > 0) {
-      hikes = <DisplayHikes hikes={this.state.hikes} orderedHikes={this.state.orderedHikes}/>
+      hikes = <DisplayHikes 
+        hikes={this.state.hikes} 
+        orderedHikes={this.state.orderedHikes} 
+        renderNoMoreHikes={this.renderNoMoreHikes}
+        noMoreHikes={this.state.noMoreHikes}
+        url={this.state.url}
+        addHikes={this.addHikes}
+      />
     }
 
     return (
@@ -78,6 +116,8 @@ class Hikes extends Component {
           setHikes={this.setHikes}
           setTooLong={this.setTooLong} 
           updateOrderedHikes={this.updateOrderedHikes}
+          hideNoMoreHikes={this.hideNoMoreHikes}
+          setUrl={this.setUrl}
         />
         {hikes}
       </div>

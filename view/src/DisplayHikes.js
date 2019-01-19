@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class DisplayHikes extends Component {
   state = {
     hikeList: [...this.props.hikes.doableHikes, ...this.props.hikes.stretchHikes],
-    orderedHikes: this.props.orderedHikes
+    orderedHikes: this.props.orderedHikes,
+    startPoint: 10
   }
 
   createDetails = (hike, key) => {
@@ -63,10 +65,10 @@ class DisplayHikes extends Component {
     const currentIndex = this.props.orderedHikes.byLength.indexOf(currentHike);
     if (currentIndex !== 0) {
       const newHike = this.props.orderedHikes.byLength[currentIndex - 1];
-      this.updateSuggestedTrail(newHike);
+      return this.updateSuggestedTrail(newHike);
     }
 
-    //renderNoMoreHikes();
+    this.props.renderNoMoreHikes();
   }
 
   getLongerDistance = () => {
@@ -74,10 +76,10 @@ class DisplayHikes extends Component {
     const currentIndex = this.props.orderedHikes.byLength.indexOf(currentHike);
     if (currentIndex !== this.state.hikeList.length - 1) {
       const newHike = this.props.orderedHikes.byLength[currentIndex + 1];
-      this.updateSuggestedTrail(newHike);
+      return this.updateSuggestedTrail(newHike);
     }
 
-    //renderNoMoreHikes();
+    this.props.renderNoMoreHikes();
   }
 
   getShorterDrive = () => {
@@ -85,10 +87,10 @@ class DisplayHikes extends Component {
     const currentIndex = this.props.orderedHikes.byDrivingDistance.indexOf(currentHike);
     if (currentIndex !== 0) {
       const newHike = this.props.orderedHikes.byDrivingDistance[currentIndex - 1];
-      this.updateSuggestedTrail(newHike);
+      return this.updateSuggestedTrail(newHike);
     }
 
-    //renderNoMoreHikes();
+    this.props.renderNoMoreHikes();
   }
 
   getLongerDrive = () => {
@@ -96,10 +98,10 @@ class DisplayHikes extends Component {
     const currentIndex = this.props.orderedHikes.byDrivingDistance.indexOf(currentHike);
     if (currentIndex !== this.state.hikeList.length - 1) {
       const newHike = this.props.orderedHikes.byDrivingDistance[currentIndex + 1];
-      this.updateSuggestedTrail(newHike);
+      return this.updateSuggestedTrail(newHike);
     }
 
-    //renderNoMoreHikes();
+    this.props.renderNoMoreHikes();
   }
 
   getLessDifficult = () => {
@@ -107,10 +109,10 @@ class DisplayHikes extends Component {
     const currentIndex = this.props.orderedHikes.byDifficulty.indexOf(currentHike);
     if (currentIndex !== 0) {
       const newHike = this.props.orderedHikes.byDifficulty[currentIndex - 1];
-      this.updateSuggestedTrail(newHike);
+      return this.updateSuggestedTrail(newHike);
     }
 
-    //renderNoMoreHikes();
+    this.props.renderNoMoreHikes();
   }
 
   getMoreDifficult = () => {
@@ -118,14 +120,33 @@ class DisplayHikes extends Component {
     const currentIndex = this.props.orderedHikes.byDifficulty.indexOf(currentHike);
     if (currentIndex !== this.state.hikeList.length - 1) {
       const newHike = this.props.orderedHikes.byDifficulty[currentIndex + 1];
-      this.updateSuggestedTrail(newHike);
+      return this.updateSuggestedTrail(newHike);
     }
 
-    //renderNoMoreHikes();
+    this.props.renderNoMoreHikes();
+  }
+
+  loadMoreHikes = () => {
+    axios.get(`${this.props.url}&startPoint=${this.state.startPoint}`)
+      .then(response => {
+        this.props.addHikes(response.body);
+        this.updateStartPoint();
+      });
+  }
+
+  updateStartPoint = () => {
+    this.setState(state => {
+      return state.startPoint += 10;
+    });
   }
 
 
   render() {
+    let noMoreHikes;
+    if (this.props.noMoreHikes) {
+      noMoreHikes = <button onClick={this.loadMoreHikes}>Load More Hikes</button>
+    }
+
     return (
       <div>
         Suggested Hike: {this.createDetails(this.state.hikeList[0], 12345)}
@@ -136,8 +157,7 @@ class DisplayHikes extends Component {
         <button onClick={this.getLongerDrive}>Longer Drive</button>
         <button onClick={this.getLessDifficult}>Less Difficult</button>
         <button onClick={this.getMoreDifficult}>More Difficult</button>
-        <hr />
-        All Hikes: {this.printHikes()}
+        {noMoreHikes}
       </div>
     );
   }

@@ -8,9 +8,9 @@ const getTrails = async function(params) {
   return availableTrails.trails;
 };
 
-const filterTrails = function({trails, maxTrailLength}) {
-  return trails.filter(trail => {
-    return trail.length <= maxTrailLength; 
+const filterTrails = function({trails, maxTrailLength, startPoint = 0}) {
+  return trails.filter((trail, index) => {
+    return trail.length <= maxTrailLength && index >= startPoint; 
   });
 };
 
