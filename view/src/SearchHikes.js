@@ -55,9 +55,8 @@ class SearchHikes extends Component {
       .then(response => {
         // let response = {}
         // response.data = JSON.parse(asdf)
-        console.log('## RESPONSE ##', response.data)
         this.props.setHikes(response.data);
-        this.props.setUrl(url);
+        this.props.setUrl(url);;
       });
   }
   

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SearchHikes from './SearchHikes';
 import DisplayHikes from './DisplayHikes';
-import { difficultyMap } from '../utils'
+import { difficultyMap } from './utils'
 
 class Hikes extends Component {
   state = {
@@ -82,10 +82,9 @@ class Hikes extends Component {
     });
   }
 
-  setUrl = url => {
-    this.setState(state => {
-      return state.url = url;
-    });
+  setUrl = newUrl => {
+    this.setState({ url: newUrl });
+    setTimeout(() => console.log(JSON.stringify(this.state)), 500);
   }
 
   render() {

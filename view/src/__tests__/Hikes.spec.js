@@ -5,7 +5,7 @@ import Hikes from '../Hikes';
 import SearchHikes from '../SearchHikes';
 import DisplayHikes from '../DisplayHikes';
 import { hikeMocks } from './__mocks__/hikeMocks';
-import { difficultyMap } from '../../utils';
+import { difficultyMap } from '../utils';
 
 configure({ adapter: new Adapter() });
 
@@ -98,6 +98,6 @@ describe('Hikes::', () => {
 
       wrapper.instance().addHikes(hikeObject);
       expect(wrapper.instance().state.hikes.doableHikes).toHaveLength(1);
-    })
+    });
   });
 });

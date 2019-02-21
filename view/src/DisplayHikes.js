@@ -62,7 +62,8 @@ class DisplayHikes extends Component {
 
   getShorterDistance = () => {
     const currentHike = this.state.hikeList[0];
-    const currentIndex = this.props.orderedHikes.byLength.indexOf(currentHike);
+    const currentIndex = this.props.orderedHikes.byLength.map(hike => 
+      hike.trail.name).indexOf(currentHike.trail.name);
     if (currentIndex !== 0) {
       const newHike = this.props.orderedHikes.byLength[currentIndex - 1];
       return this.updateSuggestedTrail(newHike);
@@ -73,7 +74,8 @@ class DisplayHikes extends Component {
 
   getLongerDistance = () => {
     const currentHike = this.state.hikeList[0];
-    const currentIndex = this.props.orderedHikes.byLength.indexOf(currentHike);
+    const currentIndex = this.props.orderedHikes.byLength.map(hike => 
+      hike.trail.name).indexOf(currentHike.trail.name);
     if (currentIndex !== this.state.hikeList.length - 1) {
       const newHike = this.props.orderedHikes.byLength[currentIndex + 1];
       return this.updateSuggestedTrail(newHike);
@@ -84,7 +86,8 @@ class DisplayHikes extends Component {
 
   getShorterDrive = () => {
     const currentHike = this.state.hikeList[0];
-    const currentIndex = this.props.orderedHikes.byDrivingDistance.indexOf(currentHike);
+    const currentIndex = this.props.orderedHikes.byDrivingDistance.map(hike => 
+      hike.trail.name).indexOf(currentHike.trail.name);
     if (currentIndex !== 0) {
       const newHike = this.props.orderedHikes.byDrivingDistance[currentIndex - 1];
       return this.updateSuggestedTrail(newHike);
@@ -95,7 +98,8 @@ class DisplayHikes extends Component {
 
   getLongerDrive = () => {
     const currentHike = this.state.hikeList[0];
-    const currentIndex = this.props.orderedHikes.byDrivingDistance.indexOf(currentHike);
+    const currentIndex = this.props.orderedHikes.byDrivingDistance.map(hike => 
+      hike.trail.name).indexOf(currentHike.trail.name);
     if (currentIndex !== this.state.hikeList.length - 1) {
       const newHike = this.props.orderedHikes.byDrivingDistance[currentIndex + 1];
       return this.updateSuggestedTrail(newHike);
@@ -106,7 +110,8 @@ class DisplayHikes extends Component {
 
   getLessDifficult = () => {
     const currentHike = this.state.hikeList[0];
-    const currentIndex = this.props.orderedHikes.byDifficulty.indexOf(currentHike);
+    const currentIndex = this.props.orderedHikes.byDifficulty.map(hike => 
+      hike.trail.name).indexOf(currentHike.trail.name);
     if (currentIndex !== 0) {
       const newHike = this.props.orderedHikes.byDifficulty[currentIndex - 1];
       return this.updateSuggestedTrail(newHike);
@@ -117,7 +122,8 @@ class DisplayHikes extends Component {
 
   getMoreDifficult = () => {
     const currentHike = this.state.hikeList[0];
-    const currentIndex = this.props.orderedHikes.byDifficulty.indexOf(currentHike);
+    const currentIndex = this.props.orderedHikes.byDifficulty.map(hike => 
+      hike.trail.name).indexOf(currentHike.trail.name);
     if (currentIndex !== this.state.hikeList.length - 1) {
       const newHike = this.props.orderedHikes.byDifficulty[currentIndex + 1];
       return this.updateSuggestedTrail(newHike);
@@ -150,13 +156,13 @@ class DisplayHikes extends Component {
     return (
       <div>
         Suggested Hike: {this.createDetails(this.state.hikeList[0], 12345)}
-        <button onClick={this.getNextTrail}>Next Suggestion</button>
-        <button onClick={this.getShorterDistance}>Shorter Hike</button>
-        <button onClick={this.getLongerDistance}>Longer Hike</button>
-        <button onClick={this.getShorterDrive}>Closer Drive</button>
-        <button onClick={this.getLongerDrive}>Longer Drive</button>
-        <button onClick={this.getLessDifficult}>Less Difficult</button>
-        <button onClick={this.getMoreDifficult}>More Difficult</button>
+        <button id="next" onClick={this.getNextTrail}>Next Suggestion</button>
+        <button id="getShorterDistance" onClick={this.getShorterDistance}>Shorter Hike</button>
+        <button id="getLongerDistance" onClick={this.getLongerDistance}>Longer Hike</button>
+        <button id="getShorterDrive" onClick={this.getShorterDrive}>Closer Drive</button>
+        <button id="getLongerDrive" onClick={this.getLongerDrive}>Longer Drive</button>
+        <button id="getLessDifficult" onClick={this.getLessDifficult}>Less Difficult</button>
+        <button id="getMoreDifficult" onClick={this.getMoreDifficult}>More Difficult</button>
         {noMoreHikes}
       </div>
     );
