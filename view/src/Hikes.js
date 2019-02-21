@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import SearchHikes from './SearchHikes';
 import DisplayHikes from './DisplayHikes';
-
-const difficultyMap = {
-  'green': 0,
-  'greenBlue': 1,
-  'blue': 2,
-  'blueBlack': 3,
-  'black': 4,
-  'dBlack': 5
-};
+import { difficultyMap } from '../utils'
 
 class Hikes extends Component {
   state = {
@@ -59,7 +51,6 @@ class Hikes extends Component {
 
   updateOrderedHikes = () => {
     const hikeCopy = [...this.state.hikes.doableHikes, ...this.state.hikes.stretchHikes];
-    console.log('## HIKE COPY ##', hikeCopy)
     const lengthOrder = [...hikeCopy].sort((a, b) => a.trail.length - b.trail.length);
     const timeToHikeOrder = [...hikeCopy].sort((a, b) => a.timeToHike - b.timeToHike);
     const difficultyOrder = [...hikeCopy].sort((a, b) => {
