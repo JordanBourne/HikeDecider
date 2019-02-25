@@ -6,7 +6,7 @@ import { hikesState } from './__mocks__/hikesState';
 
 configure({ adapter: new Adapter() });
 
-describe('Hikes::', () => {
+describe('DisplayHikes::', () => {
   let wrapper;
   let props;
 
