@@ -1,7 +1,7 @@
 import React from 'react';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import DisplayHikes from '../DisplayHikes';
+import DisplayHikes from '../components/DisplayHikes';
 import { hikesState } from './__mocks__/hikesState';
 
 configure({ adapter: new Adapter() });

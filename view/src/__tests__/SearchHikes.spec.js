@@ -2,8 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import SearchHikes from '../SearchHikes';
-import { hikesState } from './__mocks__/hikesState';
+import SearchHikes from '../components/SearchHikes';
 
 configure({ adapter: new Adapter() });
 
@@ -19,15 +18,17 @@ describe('SearchHikes::', () => {
       setTooLong: jest.fn(),
       updateOrderedHikes: jest.fn(),
       hideNoMoreHikes: jest.fn(),
-      setUrl: jest.fn()
+      setUrl: jest.fn(),
+      lat: 40.39439,
+      lon: -105.07058
     };
     wrapper = shallow(<SearchHikes {...props} />);
   });
 
   describe('Rendering::', () => {
-    it('Has 9 labels, 6 inputs, and 3 dropdowns', () => {
-      expect(wrapper.find('label')).toHaveLength(9);
-      expect(wrapper.find('input')).toHaveLength(6);
+    it('Has 7 labels, 4 inputs, and 3 dropdowns', () => {
+      expect(wrapper.find('label')).toHaveLength(7);
+      expect(wrapper.find('input')).toHaveLength(4);
       expect(wrapper.find('select')).toHaveLength(3);
     });
   });
@@ -40,7 +41,7 @@ describe('SearchHikes::', () => {
     });
     it('Url should be generated depending on the state', () => {
       wrapper.setState({
-        lat: 1,
+        lat:1,
         lon: 2,
         maxDistanceToTrail: 3,
         minTrailLength: 4,

@@ -6,8 +6,8 @@ const DIFFICULTYLEVELS = ['Very Easy', 'Easy', 'Medium', 'Very Medium', 'Hard', 
 
 class SearchHikes extends Component {
   state = {
-    lat: 40.394390,
-    lon: -105.070580,
+    lat: this.props.lat,
+    lon: this.props.lon,
     maxDistanceToTrail: 50,
     minTrailLength: 0,
     maxTrailLength: 20,
@@ -61,28 +61,6 @@ class SearchHikes extends Component {
   render() {
     return (
       <div className="search-params">
-        <label htmlFor="lat">
-          Starting Latitude: 
-          <input
-            id="lat"
-            type="number"
-            value={this.state.lat}
-            placeholder={this.state.lat}
-            onChange={this.handleInputChange.bind(this, 'lat')}
-          />
-        </label>
-        <br />
-        <label htmlFor="lon">
-          Starting Longitude: 
-          <input
-            id="lon"
-            type="number"
-            value={this.state.lon}
-            placeholder={this.state.lon}
-            onChange={this.handleInputChange.bind(this, 'lon')}
-          />
-        </label>
-        <br />
         <label htmlFor="maxDistanceToTrail">
           Max Distance To Trail: 
           <input

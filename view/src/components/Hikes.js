@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import SearchHikes from './SearchHikes';
 import DisplayHikes from './DisplayHikes';
-import { difficultyMap } from './utils'
+import AddressSearch from './AddressSearch';
+import { difficultyMap } from '../utils'
 
 class Hikes extends Component {
   state = {
@@ -16,7 +17,9 @@ class Hikes extends Component {
       byDrivingDistance: []
     },
     noMoreHikes: false,
-    url: ''
+    url: '',
+    lat: 0,
+    lon: 0
   }
 
   setHikes = hikes => {
@@ -84,7 +87,10 @@ class Hikes extends Component {
 
   setUrl = newUrl => {
     this.setState({ url: newUrl });
-    setTimeout(() => console.log(JSON.stringify(this.state)), 500);
+  }
+
+  setCoordinates = ({ lat, lon }) => {
+    this.setState({ lat, lon });
   }
 
   render() {
@@ -102,12 +108,15 @@ class Hikes extends Component {
 
     return (
       <div>
+        <AddressSearch setCoordinates={this.setCoordinates} />
         <SearchHikes 
           setHikes={this.setHikes}
           setTooLong={this.setTooLong} 
           updateOrderedHikes={this.updateOrderedHikes}
           hideNoMoreHikes={this.hideNoMoreHikes}
           setUrl={this.setUrl}
+          lat={this.state.lat}
+          lon={this.state.lon}
         />
         {hikes}
       </div>

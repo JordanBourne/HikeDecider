@@ -1,9 +1,10 @@
 import React from 'react';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Hikes from '../Hikes';
-import SearchHikes from '../SearchHikes';
-import DisplayHikes from '../DisplayHikes';
+import Hikes from '../components/Hikes';
+import SearchHikes from '../components/SearchHikes';
+import DisplayHikes from '../components/DisplayHikes';
+import AddressSearch from '../components/AddressSearch';
 import { hikeMocks } from './__mocks__/hikeMocks';
 import { difficultyMap } from '../utils';
 
@@ -19,6 +20,7 @@ describe('Hikes::', () => {
   describe('Rendering::', () => {
     it('Has SearchHikes componenet', () => {
       expect(wrapper.find(SearchHikes)).toHaveLength(1);
+      expect(wrapper.find(AddressSearch)).toHaveLength(1);
     });
 
     it('Has DisplayHikes component when doableHikes exist', () => {
@@ -99,5 +101,11 @@ describe('Hikes::', () => {
       wrapper.instance().addHikes(hikeObject);
       expect(wrapper.instance().state.hikes.doableHikes).toHaveLength(1);
     });
+
+    it('Updates the lat and lon in state', () => {
+      wrapper.instance().setCoordinates({ lat: 1, lon: 2});
+      expect(wrapper.instance().state.lat).toEqual(1);
+      expect(wrapper.instance().state.lon).toEqual(2);
+    })
   });
 });

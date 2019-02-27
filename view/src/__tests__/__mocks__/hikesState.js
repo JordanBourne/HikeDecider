@@ -7268,5 +7268,7 @@ export const hikesState = {
       },
       "timeToHike": 11941.199999999999
     }
-  ]
+  ],
+  "lat": 40.0807991,
+  "lon": -105.0706283
 };
