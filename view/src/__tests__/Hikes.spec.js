@@ -103,7 +103,7 @@ describe('Hikes::', () => {
     });
 
     it('Updates the lat and lon in state', () => {
-      wrapper.instance().setCoordinates({ lat: 1, lon: 2});
+      wrapper.instance().setCoordinates({ lat: 1, lng: 2});
       expect(wrapper.instance().state.lat).toEqual(1);
       expect(wrapper.instance().state.lon).toEqual(2);
     })

@@ -7,17 +7,14 @@ import PlacesAutocomplete, {
 import AddressDropdown from './AddressDropdown';
 
 class AddressSearch extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { address: '' };
-  }
+  state = { address: '' };
 
   handleChange = address => {
     this.setState({ address });
   };
 
-  handleSelect = address => {
-    geocodeByAddress(address)
+  handleSelect = async address => {
+    await geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => this.props.setCoordinates(latLng))
       .catch(error => console.error('Error', error));

@@ -6,8 +6,6 @@ const DIFFICULTYLEVELS = ['Very Easy', 'Easy', 'Medium', 'Very Medium', 'Hard', 
 
 class SearchHikes extends Component {
   state = {
-    lat: this.props.lat,
-    lon: this.props.lon,
     maxDistanceToTrail: 50,
     minTrailLength: 0,
     maxTrailLength: 20,
@@ -31,7 +29,7 @@ class SearchHikes extends Component {
   };
 
   buildUrl = () => {
-    let url = `http://localhost:1337/getHikes?`;
+    let url = `http://localhost:1337/getHikes?lat=${this.props.lat}&lon=${this.props.lon}&`;
     const keys = Object.keys(this.state);
     keys.forEach((key, index)=> {
       if (index !== 0) {

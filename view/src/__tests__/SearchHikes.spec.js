@@ -41,8 +41,6 @@ describe('SearchHikes::', () => {
     });
     it('Url should be generated depending on the state', () => {
       wrapper.setState({
-        lat:1,
-        lon: 2,
         maxDistanceToTrail: 3,
         minTrailLength: 4,
         maxTrailLength: 5,
@@ -52,7 +50,7 @@ describe('SearchHikes::', () => {
         ignoreTimeRestriction: true
       });
       const url = wrapper.instance().buildUrl();;
-      expect(url).toEqual('http://localhost:1337/getHikes?lat=1&lon=2&maxDistanceToTrail=3&minTrailLength=4&maxTrailLength=5&rating=6&difficulty=1&experience=Thing&ignoreTimeRestriction=true');
+      expect(url).toEqual('http://localhost:1337/getHikes?lat=40.39439&lon=-105.07058&maxDistanceToTrail=3&minTrailLength=4&maxTrailLength=5&rating=6&difficulty=1&experience=Thing&ignoreTimeRestriction=true');
     });
   });
 });

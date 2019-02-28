@@ -89,7 +89,7 @@ class Hikes extends Component {
     this.setState({ url: newUrl });
   }
 
-  setCoordinates = ({ lat, lon }) => {
+  setCoordinates = ({ lat, lng: lon }) => {
     this.setState({ lat, lon });
   }
 
