@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import SearchHikes from './SearchHikes';
-import DisplayHikes from './DisplayHikes';
-import AddressSearch from './AddressSearch';
+import SearchHikes from './SearchHikes.old';
+import DisplayHikes from './DisplayHikes.old';
+import AddressSearch from './AddressSearch.old';
 import { difficultyMap } from '../utils'
 
 class Hikes extends Component {

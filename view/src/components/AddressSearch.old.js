@@ -4,7 +4,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-import AddressDropdown from './AddressDropdown';
+import AddressDropdown from './AddressDropdown.old';
 
 class AddressSearch extends React.Component {
   state = { address: '' };

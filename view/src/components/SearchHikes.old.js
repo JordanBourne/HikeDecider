@@ -28,6 +28,23 @@ class SearchHikes extends Component {
     });
   };
 
+  buildUrl = () => {
+    let url = `http://localhost:1337/getHikes?lat=${this.props.lat}&lon=${this.props.lon}&`;
+    const keys = Object.keys(this.state);
+    keys.forEach((key, index)=> {
+      if (index !== 0) {
+        url += '&'
+      }
+      if (key === 'difficulty') {
+        url += `${key}=${DIFFICULTYLEVELS.indexOf(this.state[key])}`;
+      } else {
+        url += `${key}=${this.state[key]}`;
+      }
+    });
+
+    return url;
+  }
+
   submitForm = () => {
     this.props.hideNoMoreHikes();
     const url = this.buildUrl();
@@ -140,23 +157,6 @@ class SearchHikes extends Component {
       </div>
     );
   }
-}
-
-const buildUrl = () => {
-  let url = `http://localhost:1337/getHikes?lat=${this.props.lat}&lon=${this.props.lon}&`;
-  const keys = Object.keys(this.state);
-  keys.forEach((key, index)=> {
-    if (index !== 0) {
-      url += '&'
-    }
-    if (key === 'difficulty') {
-      url += `${key}=${DIFFICULTYLEVELS.indexOf(this.state[key])}`;
-    } else {
-      url += `${key}=${this.state[key]}`;
-    }
-  });
-
-  return url;
 }
 
 export default SearchHikes;
