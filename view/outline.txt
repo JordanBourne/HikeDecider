@@ -1,0 +1,19 @@
+Land on splashpage
+  Search Component
+    Address Search
+    Link to advanced search
+    Search Button
+    Builds URL
+    Search will redirect to a url with params
+
+Land on results page with the url params
+  Search Component
+    Address Search
+    Link to advanced search
+    ...
+  Results Component
+    List of results
+    Ordered results
+    Results navigation
+    Request more results
+    

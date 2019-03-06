@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SearchHikes from './SearchHikes.old';
 import DisplayHikes from './DisplayHikes.old';
 import AddressSearch from './AddressSearch.old';
-import { difficultyMap } from '../utils'
+import { difficultyMap } from '../config'
 
 class Hikes extends Component {
   state = {
