@@ -1,10 +1,10 @@
 import React from 'react';
-import SearchHikes from './SearchHikes';
+import SimpleSearch from './SimpleSearch';
 
 function Homepage() {
   return (
     <div>
-      <SearchHikes showAdvanced={false} />
+      <SimpleSearch />
     </div>
   );
 }

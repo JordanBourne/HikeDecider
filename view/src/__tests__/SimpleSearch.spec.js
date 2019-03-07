@@ -1,8 +1,8 @@
 import React from 'react';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Homepage from '../components/Homepage';
 import SimpleSearch from '../components/SimpleSearch';
+import AddressSearch from '../components/AddressSearch';
 
 configure({ adapter: new Adapter() });
 
@@ -12,12 +12,13 @@ describe('Homepage::', () => {
 
   beforeEach(() => {
     props = {};
-    wrapper = shallow(<Homepage {...props} />);
+    wrapper = shallow(<SimpleSearch {...props} />);
   });
 
   describe('Rendering::', () => {
-    it('Has the simple SimpleSearch component', () => {
-      expect(wrapper.find(SimpleSearch)).toHaveLength(1);
+    it('Has an address field and search button on simple render', () => {
+      expect(wrapper.find(AddressSearch)).toHaveLength(1);
+      expect(wrapper.find('[data-test="search-button"]')).toHaveLength(1);
     });
   });
 });
