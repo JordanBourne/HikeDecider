@@ -4,29 +4,24 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 import AddressDropdown from './AddressDropdown';
+import urlUtils from '../utils/urlUtils';
 
-function AddressSearch(props) {
+function AddressSearch() {
   const [ address, setAddress ] = useState('');
 
-  function handleChange(address) {
-    setAddress(address);
-  };
-
-  async function handleSelect(address) {
-    await geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => props.setCoordinates(latLng))
-      .catch(error => console.error('Error', error));
+  function handleChange(newAddress) {
+    setAddress(newAddress);
   };
 
   return (
     <PlacesAutocomplete
       value={address}
       onChange={handleChange}
-      onSelect={handleSelect}
+      onSelect={(address) => handleSelect(address)}
+      data-testid="google-address-search"
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-        <AddressDropdown 
+        <AddressDropdown
           getInputProps={getInputProps}
           suggestions={suggestions}
           getSuggestionItemProps={getSuggestionItemProps}
@@ -36,5 +31,11 @@ function AddressSearch(props) {
     </PlacesAutocomplete>
   );
 }
+
+export const handleSelect = async (address) => 
+  await geocodeByAddress(address)
+    .then(results => getLatLng(results[0]))
+    .then(latLng => urlUtils.goToSearch(latLng))
+    .catch(error => console.error('Error', error));
 
 export default AddressSearch;

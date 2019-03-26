@@ -8,3 +8,12 @@ export const difficultyMap = {
   'black': 4,
   'dBlack': 5
 };
+export const defaultParams = {
+  maxDistanceToTrail: 50,
+  minTrailLength: 0,
+  maxTrailLength: 20,
+  rating: 1,
+  difficulty: 'Hard',
+  experience: 'beginner',
+  ignoreTimeRestriction: false
+};

@@ -13,9 +13,9 @@ function AddressDropdown(props) {
       <div className="autocomplete-root">
         <input {...getInputProps()} />
         <div className="autocomplete-dropdown-container" data-test="addressDropdown">
-          {loading && <div data-test="loading">Loading...</div>}
+          {loading && <div data-testid="loading">Loading...</div>}
           {suggestions.map((suggestion, index) => (
-            <div {...getSuggestionItemProps(suggestion)} data-test="suggestionItem" key={index}>
+            <div {...getSuggestionItemProps(suggestion)} data-testid="suggestionItem" key={index}>
               <span>{suggestion.description}</span>
             </div>
           ))}

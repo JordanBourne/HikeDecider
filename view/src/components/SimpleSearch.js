@@ -1,11 +1,11 @@
 import React from 'react';
 import AddressSearch from './AddressSearch'
 
-function SimpleSearch(props) {
+function SimpleSearch() {
   return (
     <div>
       <AddressSearch />
-      <button data-test="search-button"/>
+      <button data-test="search-button">Search</button>
     </div>
   );
 }

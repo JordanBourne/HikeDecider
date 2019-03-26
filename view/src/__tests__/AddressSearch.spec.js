@@ -1,53 +1,30 @@
-import React from 'react';
-import { configure, shallow } from 'enzyme';
-import sinon from 'sinon';
-import Adapter from 'enzyme-adapter-react-16';
-import PlacesAutocomplete, * as reactAutocompleteUtils from 'react-places-autocomplete';
-import AddressSearch from '../components/AddressSearch';
-import AddressDropdown from '../components/AddressDropdown';
+import { handleSelect } from '../components/AddressSearch';
+import * as reactPlacesAutocomplete from 'react-places-autocomplete';
+import * as sinon from 'sinon';
+import urlUtils from '../utils/urlUtils';
 
-configure({ adapter: new Adapter() });
+const LAT_LONG_RESULT = 'LAT_LONG_RESULT';
 
 describe('AddressSearch::', () => {
-  let wrapper;
   let sandbox;
-  let geocodeMock;
-  let getLatLngMock;
-  let setCoordsMock;
-  let props;
+  let geocodeStub;
+  let latLongStub;
+  let goToSearchStub;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    geocodeMock = sandbox.stub(reactAutocompleteUtils, 'geocodeByAddress');
-    geocodeMock.resolves(['Location Object']);
-    getLatLngMock = sandbox.stub(reactAutocompleteUtils, 'getLatLng');
-    getLatLngMock.rejects('Bad things');
-    getLatLngMock.withArgs('Location Object').resolves({ lat: 40, lng: -100});
+    geocodeStub = sandbox.stub(reactPlacesAutocomplete, 'geocodeByAddress');
+    geocodeStub.resolves(['result']);
 
-    setCoordsMock = jest.fn()
-    props = {
-      setCoordinates: jest.fn((args) => console.log(args))//jest.fn()
-    };
+    latLongStub = sandbox.stub(reactPlacesAutocomplete, 'getLatLng');
+    latLongStub.resolves('latLong');
 
-    wrapper = shallow(<AddressSearch setCoordinates={setCoordsMock}/>);
+    goToSearchStub = sandbox.stub(urlUtils, 'goToSearch');
+    goToSearchStub.resolves(LAT_LONG_RESULT);
   });
 
-  afterEach(() => {
-    sandbox.restore();
-  });
-
-  describe('Rendering::', () => {
-    it('Has AddressSearch componenet', () => {
-      expect(wrapper.find(PlacesAutocomplete)).toHaveLength(1);
-    });
-  });
-
-  describe('Functions::', () => {
-    it('Sets hikes to state accordingly', async () => {
-      let container = wrapper.render();
-      console.log(container.getElementById('#asdf'));
-      await wrapper.instance().handleSelect('Loveland, Colorado');
-      expect(setCoordsMock).toHaveBeenCalled();
-    });
+  it('should call setCoords with the latLong', async () => {
+    const result = await handleSelect('someAddress');
+    expect(result).toEqual(LAT_LONG_RESULT);
   });
 });

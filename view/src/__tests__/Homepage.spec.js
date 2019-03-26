@@ -1,23 +1,33 @@
 import React from 'react';
-import { configure, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import Homepage from '../components/Homepage';
-import SimpleSearch from '../components/SimpleSearch';
+import { render } from 'react-testing-library';
 
-configure({ adapter: new Adapter() });
+import Homepage from '../components/Homepage';
 
 describe('Homepage::', () => {
-  let wrapper;
-  let props;
+  let placeMock;
 
   beforeEach(() => {
-    props = {};
-    wrapper = shallow(<Homepage {...props} />);
+    placeMock = jest.fn()
+
+    global.google = {
+      maps: {
+        places: {
+          AutocompleteService: function() {
+            return {
+              getPlacePredictions: placeMock
+            }
+          },
+          PlacesServiceStatus: {
+            OK: true
+          }
+        }
+      }
+    };
   });
 
-  describe('Rendering::', () => {
-    it('Has the simple SimpleSearch component', () => {
-      expect(wrapper.find(SimpleSearch)).toHaveLength(1);
-    });
+  it('Can type in address field and is redirected to search of a location', () => {
+    const { getByRole } = render(<Homepage />);
+    const mapsSearchbox = getByRole('combobox');
+    expect(mapsSearchbox).toBeTruthy();
   });
 });
